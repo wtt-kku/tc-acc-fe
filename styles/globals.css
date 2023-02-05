@@ -1,21 +1,43 @@
 .button-custom {
-	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-	background-color:#ffffff;
-	border-radius:6px;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	cursor:pointer;
-	color:#666666;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #ffffff;
-  	height: 250px;
+  /* box-shadow: inset 0px 1px 0px 0px #ffffff; */
+  /* background: linear-gradient(to bottom, #ffffff 5%, #f3f3f3 100%); */
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #d9e1e9;
+  display: inline-block;
+  cursor: pointer;
+  color: #666666;
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #ffffff;
 }
 
 .button-custom:hover {
-  background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
-	background-color:#f6f6f6;
+  border: 2px solid #06b8f9;
+  /* background: linear-gradient(to bottom, #f3f3f3 5%, #ffffff 100%); */
+  /* background-color: #f6f6f6; */
+}
+
+.frame-income {
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid #c9e9fa;
+  background: linear-gradient(195deg, #caedff, #4abdf7);
+}
+
+.frame-budget {
+  padding: 16px;
+  color: #fff;
+  border-radius: 12px;
+  border: 2px solid #d8fac9;
+  background: linear-gradient(195deg, #b1f692, #50a562);
+}
+.frame-expense {
+  padding: 16px;
+  border-radius: 12px;
+  margin: 8px;
+  border: 2px solid rgb(187, 102, 102);
+  /* background: linear-gradient(195deg, rgb(187, 102, 102), rgb(213, 89, 89)); */
 }

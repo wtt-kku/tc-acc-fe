@@ -9,22 +9,14 @@ export default function Home() {
   const router = useRouter();
   return (
     <>
-      <Container
-        maxWidth="md"
-        style={{
-          // background: "green",
-          height: "100vh",
-          display: "flex",
-          alignContent: "center",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
+      <div style={{ textAlign: "center", paddingTop: 32, paddingBottom: 8 }}>
+        <img src={"tc_logo.png"} width={"200px"} />
+        <h3>ระบบจัดการบัญชี</h3>
+      </div>
+
+      <Container maxWidth="md">
         <Grid container spacing={6}>
-          <div style={{ width: "100%", textAlign: "center" }}>
-            <h2>ระบบจัดการบัญชีร้านไทยเจริญ โฆษณา</h2>
-          </div>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={6} md={4}>
             <div
               className="button-custom"
               style={{ width: "100%" }}
@@ -44,7 +36,7 @@ export default function Home() {
               </div>
             </div>
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={6} md={4}>
             <div
               className="button-custom"
               style={{ width: "100%" }}
@@ -64,8 +56,7 @@ export default function Home() {
               </div>
             </div>
           </Grid>
-
-          <Grid item xs={12} md={4}>
+          <Grid item xs={6} md={4}>
             <div
               className="button-custom"
               style={{ width: "100%" }}
@@ -82,6 +73,26 @@ export default function Home() {
               >
                 <img src={"history.png"} width="50%" />
                 <h3>ตรวจประวัติ</h3>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={6} md={4}>
+            <div
+              className="button-custom"
+              style={{ width: "100%" }}
+              onClick={() => router.push("/report")}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <img src={"report.png"} width="50%" />
+                <h3>สรุปยอด</h3>
               </div>
             </div>
           </Grid>

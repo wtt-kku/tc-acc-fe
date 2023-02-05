@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import axios from "axios";
 import delay from "@/utils/delay";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 type Props = {};
 
@@ -65,7 +66,7 @@ const AddIncome = (props: Props) => {
       transferor_bank: tranferorBank,
       method: paymethod,
       amount: parseFloat(amount.toString()),
-      transaction_date: dayjs(transactionDate).format(),
+      transaction_date: transactionDate?.toISOString() || null,
       time: time,
       remark: remark,
       reporter: reporter,
@@ -75,8 +76,9 @@ const AddIncome = (props: Props) => {
       tranferorName != "" ||
       tranferorBank != "" ||
       paymethod != "" ||
-      dayjs(transactionDate).format() != "Invalid Date" ||
+      transactionDate != null ||
       amount != 0 ||
+      time != "" ||
       reporter != ""
     ) {
       try {
@@ -124,8 +126,14 @@ const AddIncome = (props: Props) => {
   return (
     <>
       <Container maxWidth="sm" style={{ padding: 32 }}>
-        <Box style={{ cursor: "pointer" }} onClick={() => router.push("/")}>
-          <ArrowBackIosNewIcon fontSize="small" /> กลับหน้าหลัก
+        <Box style={{ paddingTop: 16 }}>
+          <Button
+            variant="outlined"
+            onClick={() => router.push("/")}
+            startIcon={<ArrowBackIosIcon />}
+          >
+            กลับหน้าหลัก
+          </Button>
         </Box>
         <br />
 
@@ -199,9 +207,11 @@ const AddIncome = (props: Props) => {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="วันที่โอน"
+                    inputFormat="DD/MM/YYYY"
                     value={transactionDate}
                     onChange={(e) => {
                       console.log(e);
+                      console.log(e?.toDate().toISOString());
                       setTransactionDate(e);
                     }}
                     renderInput={(params) => <TextField {...params} />}

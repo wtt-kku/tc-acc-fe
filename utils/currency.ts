@@ -1,5 +1,6 @@
 const toShowCurrency = (x: number) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  let t = x.toFixed(2);
+  return t.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 export default toShowCurrency;
