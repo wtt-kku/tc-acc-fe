@@ -276,8 +276,10 @@ const History = (props: Props) => {
       </Container>
 
       <Dialog
+        disableEscapeKeyDown
+        fullWidth
         open={openDialog}
-        onClose={() => setremarkDialog("")}
+        // onClose={() => setremarkDialog("")}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

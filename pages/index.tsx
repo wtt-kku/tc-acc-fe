@@ -76,6 +76,27 @@ export default function Home() {
               </div>
             </div>
           </Grid>
+
+          <Grid item xs={6} md={4}>
+            <div
+              className="button-custom"
+              style={{ width: "100%" }}
+              onClick={() => router.push("/showmoney")}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <img src={"money.png"} width="50%" />
+                <h3>ยอดปันผล</h3>
+              </div>
+            </div>
+          </Grid>
           <Grid item xs={6} md={4}>
             <div
               className="button-custom"

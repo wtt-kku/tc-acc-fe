@@ -41,3 +41,10 @@
   border: 2px solid rgb(187, 102, 102);
   /* background: linear-gradient(195deg, rgb(187, 102, 102), rgb(213, 89, 89)); */
 }
+
+.frame-money {
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid #fff9f0;
+  background: linear-gradient(195deg, #ffef8d, #e78111);
+}

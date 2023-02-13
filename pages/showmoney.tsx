@@ -6,13 +6,10 @@ import {
   Divider,
   FormControl,
   Grid,
-  IconButton,
   InputLabel,
-  Link,
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   MenuItem,
   Select,
@@ -20,51 +17,26 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import moment from "moment";
-
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import toShowCurrency from "@/utils/currency";
 import { showMonthTH } from "@/utils/date-helper";
+import moment from "moment";
+import toShowCurrency from "@/utils/currency";
 import axios from "axios";
 import Swal from "sweetalert2";
 
 type Props = {};
 
-const Report = (props: Props) => {
+const ShowMoney = (props: Props) => {
+  const router = useRouter();
   const [month, setMonth] = useState<number>(0);
   const [monthQuery, setMonthQuery] = useState<string>(
     new Date().toISOString()
   );
 
-  const [summary, setSummary] = useState<number>(0);
-
-  const [summaryExcludeVat, setSummaryExcludeVat] = useState<number>(0);
-
-  const [budget, setBudget] = useState<number>(0);
-  const [dividend, setDividend] = useState<number>(0);
-
-  //รายจ่าย รับจาก API
-  const [expenseSum, setExpenseSum] = useState<number>(0);
-
-  const [budgetTotal, setBudgetTotal] = useState<number>(0);
-
-  useEffect(() => {
-    setSummaryExcludeVat(summary - (summary / 100) * 7);
-  }, [summary]);
-
-  useEffect(() => {
-    setBudget((summaryExcludeVat / 100) * 70);
-    setDividend((summaryExcludeVat / 100) * 30);
-  }, [summaryExcludeVat]);
-
-  useEffect(() => {
-    setBudgetTotal(budget - expenseSum);
-  }, [expenseSum, budget]);
-
-  useEffect(() => {
-    loadIncomes();
-    loadExpenses();
-  }, [monthQuery]);
+  const [sumMoney, setSumMoney] = useState<number>(0);
+  const [sumR1, setSumR1] = useState<number>(0);
+  const [sumR2, setSumR2] = useState<number>(0);
+  const [sumR3, setSumR3] = useState<number>(0);
 
   const onMonthChanged = (e: any) => {
     setMonth(e.target.value);
@@ -72,24 +44,30 @@ const Report = (props: Props) => {
     let current = new Date(
       new Date().setMonth(new Date().getMonth() - reduceMonth)
     );
+    console.log(current.toISOString());
     setMonthQuery(current.toISOString());
   };
 
-  const router = useRouter();
+  useEffect(() => {
+    loadMoney();
+  }, [monthQuery]);
 
-  const loadIncomes = async () => {
+  const loadMoney = async () => {
     try {
-      let url = process.env.NEXT_PUBLIC_API_HOST + "/api/incomes";
+      let url = process.env.NEXT_PUBLIC_API_HOST + "/api/show-money";
       let body = {
         date: monthQuery,
       };
       let result = await axios.post(url, body);
       if (result.data.result) {
-        setSummary(result.data.data.success_summary);
+        setSumMoney(result.data.data.sum);
+        setSumR1(result.data.data.r1);
+        setSumR2(result.data.data.r2);
+        setSumR3(result.data.data.r3);
       } else {
         Swal.fire({
           title: "Error!",
-          text: "โหลดรายการเงินเข้าไม่ได้",
+          text: "โหลดรายการไม่ได้",
           icon: "error",
           showConfirmButton: false,
         });
@@ -97,34 +75,7 @@ const Report = (props: Props) => {
     } catch (error) {
       Swal.fire({
         title: "Error!",
-        text: "โหลดรายการเงินเข้าไม่ได้",
-        icon: "error",
-        showConfirmButton: false,
-      });
-    }
-  };
-
-  const loadExpenses = async () => {
-    try {
-      let url = process.env.NEXT_PUBLIC_API_HOST + "/api/expenses-td";
-      let body = {
-        date: monthQuery,
-      };
-      let result = await axios.post(url, body);
-      if (result.data.result) {
-        setExpenseSum(result.data.data.success_summary);
-      } else {
-        Swal.fire({
-          title: "Error!",
-          text: "โหลดรายการเบิกไม่ได้",
-          icon: "error",
-          showConfirmButton: false,
-        });
-      }
-    } catch (error) {
-      Swal.fire({
-        title: "Error!",
-        text: "โหลดรายการเบิกไม่ได้",
+        text: "โหลดรายการไม่ได้",
         icon: "error",
         showConfirmButton: false,
       });
@@ -147,7 +98,7 @@ const Report = (props: Props) => {
         <Box style={{ padding: 8 }}>
           <Grid container>
             <Grid item xs={12} wrap="nowrap" style={{ paddingBottom: 32 }}>
-              <h2> บัญชีเงินเดือน : </h2>
+              <h2> เงินแบ่งเดือน : </h2>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">เดือน</InputLabel>
                 <Select
@@ -210,59 +161,26 @@ const Report = (props: Props) => {
               </FormControl>
             </Grid>
 
-            <Grid item xs={12} md={4} className="frame-income">
+            <Grid item xs={12} md={4} className="frame-money">
               <Typography
                 component="h2"
                 variant="h6"
-                style={{ color: "rgb(12 85 126)" }}
+                style={{ color: "rgb(122 62 13)" }}
                 gutterBottom
               >
-                ยอดเงินทั้งหมด
+                เงินปันผลสะสม
               </Typography>
               <Typography component="p" variant="h4">
-                ฿ {toShowCurrency(summary)}
+                ฿ {toShowCurrency(sumMoney)}
               </Typography>
-              <Typography color="text.secondary">ยังไม่หัก VAT 7%</Typography>
+              <Typography color="text.secondary">สะสมตลอดทั้งเดือน</Typography>
             </Grid>
+
+            <Grid item xs={12} md={8}></Grid>
 
             <Grid item xs={12}>
               <div style={{ paddingTop: 32 }} />
-              <h2>
-                ยอดหักหลังหักภาษี <b>฿ {toShowCurrency(summaryExcludeVat)}</b>
-              </h2>
-              <Box style={{ width: "100%", display: "flex" }}>
-                <div
-                  style={{
-                    width: "65%",
-                    padding: 4,
-                    lineHeight: 2,
-                    background: "#AACB73",
-                    textAlign: "center",
-                    color: "#0b6a00",
-                    borderRadius: "14px 0px 0px 14px",
-                  }}
-                >
-                  ฿ {toShowCurrency(budget)} (งบกลาง)
-                </div>
-                <div
-                  style={{
-                    width: "35%",
-                    padding: 4,
-                    lineHeight: 2,
-                    background: "#FFC93C",
-                    textAlign: "center",
-                    borderRadius: "0px 14px 14px 0px",
-                    color: "#543505",
-                  }}
-                >
-                  ฿ {toShowCurrency(dividend)} (ปันผล)
-                </div>
-              </Box>
-            </Grid>
-
-            <Grid item xs={12}>
-              <div style={{ paddingTop: 32 }} />
-              <h2>งบกลาง {toShowCurrency(budget)}</h2>
+              <h2>รอบการแบ่ง</h2>
               {/* <h4>
                 ยอดทั้งหมด <Chip label={" ฿ 6,510.00"} color="success" />
               </h4> */}
@@ -272,14 +190,19 @@ const Report = (props: Props) => {
                   disablePadding
                   secondaryAction={
                     <Chip
-                      label={` ฿ ${toShowCurrency(budget)} `}
-                      variant="outlined"
-                      color="info"
+                      label={` ฿ ${toShowCurrency(sumR1)} `}
+                      color="warning"
                     />
                   }
                 >
                   <ListItemButton>
-                    <ListItemText primary="งบกลาง" />
+                    <ListItemText
+                      primary={`รอบที่ 1 (1-9 ${
+                        showMonthTH[
+                          parseInt(moment(monthQuery).format("MM")) - 1
+                        ]
+                      })`}
+                    />
                   </ListItemButton>
                 </ListItem>
                 <Divider component="li" />
@@ -287,14 +210,19 @@ const Report = (props: Props) => {
                   disablePadding
                   secondaryAction={
                     <Chip
-                      label={` ฿ ${toShowCurrency(expenseSum)} `}
-                      variant="outlined"
-                      color="error"
+                      label={` ฿ ${toShowCurrency(sumR2)} `}
+                      color="warning"
                     />
                   }
                 >
                   <ListItemButton>
-                    <ListItemText primary="เบิกออกไปแล้ว" />
+                    <ListItemText
+                      primary={`รอบที่ 2 (10-19 ${
+                        showMonthTH[
+                          parseInt(moment(monthQuery).format("MM")) - 1
+                        ]
+                      })`}
+                    />
                   </ListItemButton>
                 </ListItem>
                 <Divider component="li" />
@@ -302,46 +230,41 @@ const Report = (props: Props) => {
                   disablePadding
                   secondaryAction={
                     <Chip
-                      label={` ฿ ${toShowCurrency(budgetTotal)} `}
-                      color="success"
+                      label={` ฿ ${toShowCurrency(sumR3)} `}
+                      color="warning"
                     />
                   }
                 >
                   <ListItemButton>
-                    <ListItemText primary="ยอดที่สามารถเบิกได้" />
+                    <ListItemText
+                      primary={`รอบที่ 3 (20-${moment(monthQuery)
+                        .endOf("month")
+                        .format("DD")} ${
+                        showMonthTH[
+                          parseInt(moment(monthQuery).format("MM")) - 1
+                        ]
+                      }) `}
+                    />
                   </ListItemButton>
                 </ListItem>
               </List>
             </Grid>
 
-            {/* <Grid item xs={12}>
-              <div style={{ paddingTop: 32 }} />
-              <h2>ปันผล {toShowCurrency(dividend)}</h2>
-
-              <List>
-                <ListItem
-                  disablePadding
-                  secondaryAction={
-                    <Chip label={" ฿ 2,790.-"} color="warning" />
-                  }
-                >
-                  <ListItemButton>
-                    <ListItemText primary="รอบที่ 1  (1-9  ก.พ. 2023)" />
-                  </ListItemButton>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem disablePadding secondaryAction={<i>ยังไม่คำนวณ</i>}>
-                  <ListItemButton>
-                    <ListItemText primary="รอบที่ 2  (10-19  ก.พ. 2023)" />
-                  </ListItemButton>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem disablePadding secondaryAction={<i>ยังไม่คำนวณ</i>}>
-                  <ListItemButton>
-                    <ListItemText primary="รอบที่ 2  (20-28  ก.พ. 2023)" />
-                  </ListItemButton>
-                </ListItem>
-              </List>
+            {/* <Grid item xs={12} md={4} >
+              <Typography
+                component="h2"
+                variant="h6"
+                style={{ color: "rgb(12 85 126)" }}
+                gutterBottom
+              >
+                ยอดแบ่งส่วนที่ 3
+              </Typography>
+              <Typography component="p" variant="h4">
+                ฿ {toShowCurrency(25670.77)}
+              </Typography>
+              <Typography color="text.secondary">
+                1-9 กุมภาพันธ์ 2566
+              </Typography>
             </Grid> */}
           </Grid>
         </Box>
@@ -350,4 +273,4 @@ const Report = (props: Props) => {
   );
 };
 
-export default Report;
+export default ShowMoney;

@@ -46,6 +46,7 @@ const AddExpense = (props: Props) => {
 
   const [receiverName, setReceiverName] = React.useState<string>("");
   const [receiverBank, setReceiverBank] = React.useState<string>("");
+  const [receiverBankNo, setReceiverBankNo] = React.useState<string>("");
 
   const [amount, setAmount] = React.useState<number>(0);
 
@@ -146,6 +147,7 @@ const AddExpense = (props: Props) => {
       type: payType,
       receiver_name: receiverName,
       receiver_bank: receiverBank,
+      receiver_bank_no: receiverBankNo,
       amount: parseFloat(amount.toString()),
       remark: remark,
       reporter: reporter,
@@ -154,6 +156,7 @@ const AddExpense = (props: Props) => {
     if (
       receiverName != "" ||
       receiverBank != "" ||
+      receiverBankNo != "" ||
       payType != "" ||
       amount != 0 ||
       reporter != ""
@@ -274,10 +277,23 @@ const AddExpense = (props: Props) => {
                 <TextField
                   fullWidth
                   id="outlined-basic"
-                  label="หมายเลข และ ธนาคารของผู้รับเงิน"
+                  label="ธนาคารของผู้รับเงิน"
                   variant="outlined"
                   onChange={(e) => setReceiverBank(e.target.value)}
+                  placeholder="KBANK / SCB / พร้อมเพย์"
                   value={receiverBank}
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <TextField
+                  fullWidth
+                  id="outlined-basic"
+                  label="หมายเลขบัญชี / หมายเลยพร้อมเพย์"
+                  variant="outlined"
+                  onChange={(e) => setReceiverBankNo(e.target.value)}
+                  placeholder="0123456789"
+                  value={receiverBankNo}
                 />
               </FormControl>
 
