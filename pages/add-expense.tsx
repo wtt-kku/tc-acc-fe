@@ -1,13 +1,26 @@
 import {
+  Avatar,
   Box,
   Button,
   CircularProgress,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
   FormControl,
   Grid,
   InputAdornment,
   InputLabel,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemText,
   MenuItem,
+  Modal,
   OutlinedInput,
   Select,
   TextField,
@@ -42,7 +55,14 @@ const users = ["มาย", "เต้ย", "ต่อ", "พ่อ", "แม่
 
 const AddExpense = (props: Props) => {
   const router = useRouter();
+
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [payType, setPayType] = React.useState<string>("");
+
+  const [draftReceiverName, setDraftReceiverName] = React.useState<string>("");
+  const [draftReceiverBank, setDraftReceiverBank] = React.useState<string>("");
+  const [draftReceiverBankNo, setDraftReceiverBankNo] =
+    React.useState<string>("");
 
   const [receiverName, setReceiverName] = React.useState<string>("");
   const [receiverBank, setReceiverBank] = React.useState<string>("");
@@ -80,6 +100,16 @@ const AddExpense = (props: Props) => {
     if (isNaN(e.target.value)) {
     } else {
       setAmount(e.target.value);
+    }
+  };
+
+  const setGroups = (rName: string, rBank: string, rBankNo: string) => {
+    if (rName != "" || rBank != "" || rBankNo != "") {
+      setReceiverName(rName);
+      setReceiverBank(rBank);
+      setReceiverBankNo(rBankNo);
+
+      setOpenModal(false);
     }
   };
 
@@ -264,22 +294,32 @@ const AddExpense = (props: Props) => {
 
               <FormControl fullWidth margin="dense">
                 <TextField
+                  disabled
                   fullWidth
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   id="outlined-basic"
                   label="ชื่อผู้รับเงิน"
-                  variant="outlined"
-                  onChange={(e) => setReceiverName(e.target.value)}
+                  onClick={() => setOpenModal(true)}
+                  variant="filled"
+                  // onChange={(e) => setReceiverName(e.target.value)}
                   value={receiverName}
                 />
               </FormControl>
 
               <FormControl fullWidth margin="dense">
                 <TextField
+                  disabled
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   fullWidth
+                  onClick={() => setOpenModal(true)}
                   id="outlined-basic"
                   label="ธนาคารของผู้รับเงิน"
-                  variant="outlined"
-                  onChange={(e) => setReceiverBank(e.target.value)}
+                  variant="filled"
+                  // onChange={(e) => setReceiverBank(e.target.value)}
                   placeholder="KBANK / SCB / พร้อมเพย์"
                   value={receiverBank}
                 />
@@ -287,11 +327,16 @@ const AddExpense = (props: Props) => {
 
               <FormControl fullWidth margin="dense">
                 <TextField
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   fullWidth
+                  disabled
+                  onClick={() => setOpenModal(true)}
                   id="outlined-basic"
                   label="หมายเลขบัญชี / หมายเลยพร้อมเพย์"
-                  variant="outlined"
-                  onChange={(e) => setReceiverBankNo(e.target.value)}
+                  variant="filled"
+                  // onChange={(e) => setReceiverBankNo(e.target.value)}
                   placeholder="0123456789"
                   value={receiverBankNo}
                 />
@@ -361,6 +406,141 @@ const AddExpense = (props: Props) => {
           </div>
         )}
       </Container>
+
+      <Dialog
+        disableEscapeKeyDown
+        fullWidth
+        open={openModal}
+        // onClose={() => setremarkDialog("")}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">เลือกบัญชีธนาคาร</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+              <ListItemButton
+                onClick={() =>
+                  setGroups("นายพัฒนาการ วงษาบุตร", "KBANK", "7522104366")
+                }
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <img src="icon-kbank.png" width={"100%"} />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary="7522104366"
+                  secondary="นายพัฒนาการ วงษาบุตร"
+                />
+              </ListItemButton>
+              <Divider />
+              <ListItemButton
+                onClick={() =>
+                  setGroups("นส.จุฬารัตน์ ป้องเทพ", "SCB", "0472624090")
+                }
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <img src="icon-scb.png" width={"100%"} />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary="0472624090"
+                  secondary="นส.จุฬารัตน์ ป้องเทพ"
+                />
+              </ListItemButton>
+              <Divider />
+              <ListItemButton
+                onClick={() =>
+                  setGroups("นส.จุฬารัตน์ ป้องเทพ", "KBANK", "0378171202")
+                }
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <img src="icon-kbank.png" width={"100%"} />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary="0378171202"
+                  secondary="นส.จุฬารัตน์ ป้องเทพ"
+                />
+              </ListItemButton>
+              <Divider />
+              <ListItemButton
+                onClick={() =>
+                  setGroups("นส.ภาวนา มหาชัย", "BBL", "0240149781")
+                }
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <img src="icon-bkb.png" width={"100%"} />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary="0240149781"
+                  secondary="นส.ภาวนา มหาชัย"
+                />
+              </ListItemButton>
+              <Divider />
+              <h3>หรือใส่ข้อมูลเอง </h3>
+              <FormControl fullWidth margin="dense">
+                <TextField
+                  fullWidth
+                  id="outlined-basic"
+                  label="ชื่อผู้รับเงิน"
+                  variant="outlined"
+                  onChange={(e) => setDraftReceiverName(e.target.value)}
+                  value={draftReceiverName}
+                />
+              </FormControl>
+              <FormControl fullWidth margin="dense">
+                <TextField
+                  fullWidth
+                  id="outlined-basic"
+                  label="ธนาคารของผู้รับเงิน"
+                  variant="outlined"
+                  onChange={(e) => setDraftReceiverBank(e.target.value)}
+                  placeholder="KBANK / SCB / พร้อมเพย์"
+                  value={draftReceiverBank}
+                />
+              </FormControl>
+              <FormControl fullWidth margin="dense">
+                <TextField
+                  fullWidth
+                  id="outlined-basic"
+                  label="หมายเลขบัญชี / หมายเลยพร้อมเพย์"
+                  variant="outlined"
+                  onChange={(e) => setDraftReceiverBankNo(e.target.value)}
+                  placeholder="0123456789"
+                  value={draftReceiverBankNo}
+                />
+              </FormControl>
+              <div style={{ paddingTop: 8 }} />
+              <Button
+                variant="contained"
+                color="success"
+                style={{ padding: 16 }}
+                fullWidth
+                onClick={() =>
+                  setGroups(
+                    draftReceiverName,
+                    draftReceiverBank,
+                    draftReceiverBankNo
+                  )
+                }
+              >
+                ยืนยันข้อมูลผู้รับ
+              </Button>
+            </List>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenModal(false)} autoFocus>
+            ปิด
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
