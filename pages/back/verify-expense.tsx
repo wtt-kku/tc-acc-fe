@@ -111,7 +111,7 @@ const VerifyExpense = (props: Props) => {
               <TextField
                 fullWidth
                 id="outlined-basic"
-                label="Income ID"
+                label="Expense ID"
                 variant="outlined"
                 value={expenseID}
                 onChange={(e) => setExpenseID(e.target.value)}
