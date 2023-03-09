@@ -293,6 +293,17 @@ const AddExpense = (props: Props) => {
               </FormControl>
 
               <FormControl fullWidth margin="dense">
+                <Button
+                  onClick={() => setOpenModal(true)}
+                  variant="contained"
+                  style={{ padding: 12 }}
+                  // onChange={(e) => setReceiverName(e.target.value)}
+                >
+                  เลือกผู้รับเงิน
+                </Button>
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
                 <TextField
                   disabled
                   fullWidth
@@ -301,7 +312,7 @@ const AddExpense = (props: Props) => {
                   }}
                   id="outlined-basic"
                   label="ชื่อผู้รับเงิน"
-                  onClick={() => setOpenModal(true)}
+                  // onClick={() => setOpenModal(true)}
                   variant="filled"
                   // onChange={(e) => setReceiverName(e.target.value)}
                   value={receiverName}
@@ -315,7 +326,7 @@ const AddExpense = (props: Props) => {
                     readOnly: true,
                   }}
                   fullWidth
-                  onClick={() => setOpenModal(true)}
+                  // onClick={() => setOpenModal(true)}
                   id="outlined-basic"
                   label="ธนาคารของผู้รับเงิน"
                   variant="filled"
@@ -332,7 +343,7 @@ const AddExpense = (props: Props) => {
                   }}
                   fullWidth
                   disabled
-                  onClick={() => setOpenModal(true)}
+                  // onClick={() => setOpenModal(true)}
                   id="outlined-basic"
                   label="หมายเลขบัญชี / หมายเลยพร้อมเพย์"
                   variant="filled"

@@ -72,7 +72,7 @@ export default function Home() {
                 }}
               >
                 <img src={"history.png"} width="50%" />
-                <h3>ตรวจประวัติ</h3>
+                <h3>ประวัติเงินเข้า-ออก</h3>
               </div>
             </div>
           </Grid>

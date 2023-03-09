@@ -54,7 +54,7 @@ const Report = (props: Props) => {
 
   useEffect(() => {
     setBudget((summaryExcludeVat / 100) * 70);
-    setDividend((summaryExcludeVat / 100) * 30);
+    setDividend((summaryExcludeVat / 100) * 20);
   }, [summaryExcludeVat]);
 
   useEffect(() => {
